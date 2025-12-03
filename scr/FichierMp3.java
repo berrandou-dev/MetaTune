@@ -5,17 +5,17 @@ import java.io.File;
 public class FichierMp3 {
     //Attributs
     File fichier;
-    Metadonnee metadonnee;
+    Metadonnee metadonnees;
     
     // Constructeur
     public FichierMp3(String chemin) {
         this.fichier = new File(chemin);
         if(fichier.exists() && fichier.isFile()) {
-            this.metadonnee = new Metadonnee(fichier);
+            this.metadonnees = new Metadonnee(fichier);
         } 
         else {
             System.out.println("Le fichier n'existe pas ou n'est pas un fichier valide.");
-            this.metadonnee = null;
+            this.metadonnees = null;
         }
     }
 
@@ -23,26 +23,26 @@ public class FichierMp3 {
     public File getFichier() {
         return fichier;
     }
-    public Metadonnee getMetadonnee() {
-        return metadonnee;
+    public Metadonnee getMetadonnees() {
+        return metadonnees;
     }
     public String getChemin(){
         return fichier.getAbsolutePath();
     }
 
     //Mutateurs
-    public void lireMetadonnee(){
+    public void lireMetadonnees(){
         if(fichier.exists() && fichier.isFile()) {
-            this.metadonnee = new Metadonnee(fichier);
+            this.metadonnees = new Metadonnee(fichier);
         }
         else {
             System.out.println("Impossible de lire les métadonnées : fichier inexistant ou invalide.");
-            this.metadonnee = null;
+            this.metadonnees = null;
         }
     }
-    }
+    
     public boolean hasPochette(){
-        return metadonnee.getPochette() != null;
+        return metadonnees.getPochette() != null;
     }
 
 

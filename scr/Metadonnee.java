@@ -4,9 +4,9 @@ import java.io.File;
 
 public class Metadonnee {
     //Attributs
-    private String titre;
-    private String artiste;
-    private String album;
+    String titre;
+    String artiste;
+    String album;
     private int annee;
     private int duree;
     private String genre;

@@ -1,8 +1,8 @@
+package scr ; 
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class ExporteurXspf implements ExporteurPlaylist {
-
     @Override
     public void exporter(Playlist playlist, String cheminSortie) {
         //ecrire un textblock 

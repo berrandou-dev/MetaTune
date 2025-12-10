@@ -29,9 +29,9 @@ public class ExporteurJspf implements ExporteurPlaylist {
                               }%s
                         """,
                     formaterChemin(mp3),
-                    mp3.getMetadonnees().titre,
-                    mp3.getMetadonnees().artiste,
-                    mp3.getMetadonnees().album,
+                    mp3.getMetadonnees().getTitre(),
+                    mp3.getMetadonnees().getArtiste(),
+                    mp3.getMetadonnees().getAlbum(),
                     (i < size - 1 ? "," : "")
             ));
         }

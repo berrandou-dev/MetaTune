@@ -6,11 +6,12 @@ import java.util.List;
 
 
 public class Playlist {
-
+    //Attrributs
     private String nom;
+    private String format; // M3U, JSPF, XSPF
     private final List<FichierMp3> pistes;
 
-   
+    //Constructeur
     public Playlist(String nom) {
         this.nom = nom;
         this.pistes = new ArrayList<>();
@@ -38,16 +39,19 @@ public class Playlist {
         return Collections.unmodifiableList(pistes);
     }
 
-
-    public List<FichierMp3> getPistesModifiable() {
-        return pistes;
-    }
-
     public String getNom() {
         return nom;
     }
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 }

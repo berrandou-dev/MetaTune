@@ -4,8 +4,8 @@ import java.io.File;
 
 public class FichierMp3 {
     //Attributs
-    File fichier;
-    Metadonnee metadonnees;
+    private File fichier;
+    private Metadonnee metadonnees;
     
     // Constructeur
     public FichierMp3(String chemin) {
@@ -41,9 +41,10 @@ public class FichierMp3 {
         }
     }
     
-    public boolean hasPochette(){
-        return metadonnees.getPochette() != null;
+    public boolean hasPochette() {
+        return metadonnees != null && metadonnees.getPochette() != null;
     }
+
 
 
 

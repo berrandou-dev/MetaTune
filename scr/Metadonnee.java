@@ -35,6 +35,19 @@ public class Metadonnee {
             raf.read(buffer);
             raf.close();
 
+            if (!(buffer[0] == 'T' && buffer[1] == 'A' && buffer[2] == 'G')) {
+            // Fichier sans ID3v1 → valeurs par défaut
+            this.titre = "Inconnu";
+            this.artiste = "Inconnu";
+            this.album = "Inconnu";
+            this.annee = -1;
+            this.duree = -1;
+            this.numeroPiste = -1;
+            this.genre = "Inconnu";
+            this.pochette = null;
+            return;
+        }
+        
             // Vérifier la signature "TAG"
             if (!(buffer[0] == 'T' && buffer[1] == 'A' && buffer[2] == 'G')) {
                 throw new RuntimeException("Pas de métadonnées ID3v1 trouvées dans : " + fichier.getName());

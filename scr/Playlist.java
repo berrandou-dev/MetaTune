@@ -1,32 +1,26 @@
 package scr;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-
 public class Playlist {
-    //Attrributs
     private String nom;
     private String format; // M3U, JSPF, XSPF
     private final List<FichierMp3> pistes;
 
-    //Constructeur
     public Playlist(String nom) {
         this.nom = nom;
-        this.pistes = new ArrayList<>();
+        this.pistes = new ArrayList<>(); // Liste modifiable
     }
 
     public void vider() {
         pistes.clear();
     }
 
-    
     public int taille() {
         return pistes.size();
     }
 
-    
     public boolean estVide() {
         return pistes.isEmpty();
     }
@@ -35,8 +29,18 @@ public class Playlist {
         return pistes.contains(mp3);
     }
 
+    // Méthodes pour ajouter des pistes (préférable pour protéger la liste)
+    public void ajouterPiste(FichierMp3 mp3) {
+        pistes.add(mp3);
+    }
+
+    public void ajouterPistes(List<FichierMp3> mp3s) {
+        pistes.addAll(mp3s);
+    }
+
+    // Liste accessible en lecture seule
     public List<FichierMp3> getPistes() {
-        return Collections.unmodifiableList(pistes);
+        return new ArrayList<>(pistes);
     }
 
     public String getNom() {

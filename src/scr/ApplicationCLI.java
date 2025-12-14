@@ -23,28 +23,49 @@ public class ApplicationCLI {
         afficherAide();
     }
 
+    
+    
     public void analyserArguments(String[] args) {
-        if (args.length == 0) {
-            afficherAide();
-            return;
-        }
+    if (args.length == 0) {
+        afficherAide();
+        return;
+    }
 
-        switch (args[0]) {
+    String formatExport = null;
+    String cheminExport = null;
+
+    for (int i = 0; i < args.length; i++) {
+        switch (args[i]) {
             case "-f":
-                if (args.length > 1) modeFichier(args[1]);
+                if (i + 1 < args.length) modeFichier(args[++i]);
                 break;
             case "-r":
-                if (args.length > 1) modeRepertoire(args[1]);
+                if (i + 1 < args.length) modeRepertoire(args[++i]);
                 break;
             case "-e":
-                if (args.length > 2 && playListActive != null)
-                    exporterPlaylist(playListActive, args[2]);
+                if (i + 2 < args.length) {
+                    formatExport = args[++i];
+                    cheminExport = args[++i];
+                }
                 break;
             case "-h":
-            default:
                 afficherAide();
+                return;
+            default:
+                System.out.println("Argument invalide : " + args[i]);
+                afficherAide();
+                return;
         }
     }
+
+    // Export après traitement de tous les fichiers/répertoires
+    if (playListActive != null && formatExport != null && cheminExport != null) {
+        exporterPlaylist(playListActive, cheminExport, formatExport);
+    }
+}
+
+
+
 
     public void modeFichier(String chemin) {
         System.out.println("Mode fichier : " + chemin);
@@ -95,28 +116,31 @@ public class ApplicationCLI {
         }
     }
 
-    public void exporterPlaylist(Playlist pl, String chemin) {
-        System.out.println("Export de la playlist : " + pl.getNom());
+    public void exporterPlaylist(Playlist pl, String chemin, String format) {
+    System.out.println("Export de la playlist : " + pl.getNom());
 
-        ExporteurPlaylist exporteur;
+    ExporteurPlaylist exporteur;
 
-        switch (pl.getFormat()) {
-            case "m3u":
-                exporteur = new ExporteurM3u8();
-                break;
-            case "xspf":
-                exporteur = new ExporteurXspf();
-                break;
-            case "jspf":
-                exporteur = new ExporteurJspf();
-                break;
-            default:
-                System.out.println("Format non supporté");
-                return;
-        }
-
-        exporteur.exporter(pl, chemin);
+    switch (format.toLowerCase()) {
+        case "m3u":
+        case "m3u8":
+            exporteur = new ExporteurM3u8();
+            break;
+        case "xspf":
+            exporteur = new ExporteurXspf();
+            break;
+        case "jspf":
+            exporteur = new ExporteurJspf();
+            break;
+        default:
+            System.out.println("Format non supporté");
+            return;
     }
+
+    exporteur.exporter(pl, chemin);
+    System.out.println("Playlist exportée dans : " + chemin);
+}
+
 
     public void afficherAide() {
         System.out.println("Utilisation :");

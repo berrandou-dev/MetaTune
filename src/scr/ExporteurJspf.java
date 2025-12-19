@@ -49,10 +49,18 @@ public class ExporteurJspf implements ExporteurPlaylist {
         }
     }
     
-    //Corrige le problèmes d'affichage de chemin avec toURI()
     @Override
     public String formaterChemin(FichierMp3 mp3) {
-        return mp3.getFichier().toURI().toString();
+        if (mp3.getFichier() == null) {
+            return mp3.getChemin(); // fallback
+        }
+        // Retourne le chemin absolu canonique pour résoudre ../ et .
+        try {
+            return mp3.getFichier().getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return mp3.getFichier().getAbsolutePath();
+        }
     }
 
 }

@@ -134,6 +134,7 @@ public class ApplicationCLI {
         System.out.println("Artiste : " + md.getArtiste());
         System.out.println("Album : " + md.getAlbum());
         System.out.println("Année : " + md.getAnnee());
+        System.out.println("Durée : " + md.getDuree());
         System.out.println("Genre : " + md.getGenre());
         System.out.println("Numéro de piste : " + md.getNumeroPiste());
         System.out.println();

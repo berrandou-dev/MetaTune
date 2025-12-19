@@ -48,9 +48,11 @@ public class ExporteurJspf implements ExporteurPlaylist {
             e.printStackTrace();
         }
     }
-
+    
+    //Corrige le problèmes d'affichage de chemin avec toURI()
     @Override
     public String formaterChemin(FichierMp3 mp3) {
-        return ("file:///" + mp3.getChemin().replace("\\", "/"));
+        return mp3.getFichier().toURI().toString();
     }
+
 }

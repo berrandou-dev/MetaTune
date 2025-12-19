@@ -33,7 +33,7 @@ if [ ! -f "$MP3_TEST" ]; then
   echo "   Veuillez placer un fichier MP3 de test."
 fi
 
-CLASSPATH="$BIN_DIR;$LIB_EXT"
+CLASSPATH="$BIN_DIR:$LIB_EXT"
 
 echo "=============================="
 echo " Test 1 : Aide (-h)"

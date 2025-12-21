@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,130 +15,123 @@ import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ApplicationGUI extends Application {
 
-    private List<FichierMp3> playlist = new ArrayList<>();
-    private int currentIndex = 0;
+    private Playlist playListActive;
+    private String repertoireCourant;
 
+    private Label labelTitre;
+    private Label labelArtiste;
+    private Label labelAlbum;
+    private Label labelAnnee;
     private ImageView cover;
-    private Label title;
-    private Label artist;
+
+    private ListView<FichierMp3> listeMorceaux;
 
     @Override
     public void start(Stage stage) {
 
+        // ----------------- METADATA PANEL -----------------
+        labelTitre = new Label("Titre : ");
+        labelArtiste = new Label("Artiste : ");
+        labelAlbum = new Label("Album : ");
+        labelAnnee = new Label("Année : ");
+
+        labelTitre.setFont(Font.font(16));
+        labelArtiste.setFont(Font.font(16));
+        labelAlbum.setFont(Font.font(16));
+        labelAnnee.setFont(Font.font(16));
+
+        VBox metaBox = new VBox(10, labelTitre, labelArtiste, labelAlbum, labelAnnee);
+        metaBox.setPadding(new Insets(10));
+
         cover = new ImageView();
-        cover.setFitWidth(250);
-        cover.setFitHeight(250);
-        cover.setStyle("-fx-background-radius: 20;");
+        cover.setFitWidth(150);
+        cover.setFitHeight(150);
+        cover.setPreserveRatio(true);
 
-        title = new Label("No Track");
-        title.setFont(Font.font(20));
-        title.setTextFill(Color.WHITE);
+        VBox rightPanel = new VBox(20, cover, metaBox);
+        rightPanel.setAlignment(Pos.TOP_CENTER);
+        rightPanel.setPadding(new Insets(10));
+        rightPanel.setStyle("-fx-background-color: #121212; -fx-text-fill: white;");
 
-        artist = new Label("");
-        artist.setFont(Font.font(14));
-        artist.setTextFill(Color.LIGHTGRAY);
-
-        Button prev = createControlButton("⏮");
-        Button next = createControlButton("⏭");
-        Button openDir = new Button("📂 Ouvrir dossier");
-        openDir.setStyle("-fx-font-size:14;");
-
-        HBox controls = new HBox(10, prev, next);
-        controls.setAlignment(Pos.CENTER);
-
-        VBox card = new VBox(15, cover, title, artist, controls, openDir);
-        card.setAlignment(Pos.CENTER);
-        card.setPadding(new Insets(20));
-        card.setStyle("-fx-background-color: #1e1e1e; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, black, 20, 0.5, 0, 5);");
-
-        StackPane root = new StackPane(card);
-        root.setStyle("-fx-background-color: linear-gradient(to bottom, #2b5876, #4e4376);");
-
-        Scene scene = new Scene(root, 400, 600);
-        stage.setTitle("Mini Music Browser");
-        stage.setScene(scene);
-        stage.show();
-
-        // === Event Handlers ===
-        openDir.setOnAction(e -> {
-            DirectoryChooser chooser = new DirectoryChooser();
-            chooser.setTitle("Choisir un dossier contenant des MP3");
-            File dir = chooser.showDialog(stage);
-            if (dir != null) {
-                loadPlaylist(dir);
+        // ----------------- LIST VIEW -----------------
+        listeMorceaux = new ListView<>();
+        listeMorceaux.setStyle("-fx-background-color: #1e1e1e; -fx-control-inner-background: #1e1e1e; -fx-text-fill: white;");
+        listeMorceaux.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                afficherMetadonnees(newVal);
             }
         });
 
-        prev.setOnAction(e -> previousTrack());
-        next.setOnAction(e -> nextTrack());
+        // ----------------- BUTTONS -----------------
+        Button btnOuvrir = new Button("Ouvrir Répertoire");
+        btnOuvrir.setStyle("-fx-background-color: #1DB954; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnOuvrir.setOnAction(e -> ouvrirRepertoire(stage));
+
+        HBox buttons = new HBox(btnOuvrir);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setPadding(new Insets(10));
+
+        // ----------------- MAIN LAYOUT -----------------
+        BorderPane root = new BorderPane();
+        root.setLeft(listeMorceaux);
+        root.setRight(rightPanel);
+        root.setBottom(buttons);
+        root.setStyle("-fx-background-color: #181818;");
+
+        BorderPane.setMargin(listeMorceaux, new Insets(10));
+        BorderPane.setMargin(rightPanel, new Insets(10));
+
+        Scene scene = new Scene(root, 900, 500);
+        stage.setTitle("MetaTune - Spotify Style");
+        stage.setScene(scene);
+        stage.show();
     }
 
-    private Button createControlButton(String text) {
-        Button btn = new Button(text);
-        btn.setStyle(
-            "-fx-background-color: #333;" +
-            "-fx-text-fill: white;" +
-            "-fx-font-size: 16;" +
-            "-fx-background-radius: 50;" +
-            "-fx-min-width: 45;" +
-            "-fx-min-height: 45;"
-        );
-        return btn;
-    }
+    // ----------------- DISPLAY METADATA -----------------
+    private void afficherMetadonnees(FichierMp3 mp3) {
+        if (mp3.getMetadonnees() != null) {
+            Metadonnee m = mp3.getMetadonnees();
+            labelTitre.setText("Titre : " + m.getTitre());
+            labelArtiste.setText("Artiste : " + m.getArtiste());
+            labelAlbum.setText("Album : " + m.getAlbum());
+            labelAnnee.setText("Année : " + m.getAnnee());
 
-    private void loadPlaylist(File dir) {
-        playlist.clear();
-        currentIndex = 0;
-
-        File[] files = dir.listFiles((d, name) -> name.toLowerCase().endsWith(".mp3"));
-        if (files != null) {
-            for (File f : files) {
-                playlist.add(new FichierMp3(f.getAbsolutePath()));
+            if (mp3.hasPochette() && m.getPochette() != null) {
+                try {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(m.getPochette());
+                    Image img = new Image(bis);
+                    cover.setImage(img);
+                } catch (Exception e) {
+                    cover.setImage(null);
+                }
+            } else {
+                cover.setImage(null);
             }
         }
+    }
 
-        if (!playlist.isEmpty()) {
-            showTrack(0);
+    // ----------------- OPEN DIRECTORY -----------------
+    private void ouvrirRepertoire(Stage stage) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Choisir un répertoire de musique");
+        File dir = chooser.showDialog(stage);
+        if (dir != null) {
+            repertoireCourant = dir.getAbsolutePath();
+
+            Playlist pl = new Playlist("Playlist par défaut");
+            ExplorateurRepertoire explorateur = new ExplorateurRepertoire();
+            pl.ajouterPistes(explorateur.analyser(repertoireCourant));
+
+            playListActive = pl;
+
+            listeMorceaux.getItems().clear();
+            listeMorceaux.getItems().addAll(playListActive.getPistes());
         }
-    }
-
-    private void showTrack(int index) {
-        if (index < 0 || index >= playlist.size()) return;
-
-        currentIndex = index;
-        FichierMp3 mp3 = playlist.get(index);
-
-        Metadonnee md = mp3.getMetadonnees();
-        title.setText(md.getTitre());
-        artist.setText(md.getArtiste());
-
-        if (md.getPochette() != null) {
-            Image img = new Image(new java.io.ByteArrayInputStream(md.getPochette()));
-            cover.setImage(img);
-        } else {
-            cover.setImage(null);
-        }
-    }
-
-    private void nextTrack() {
-        if (playlist.isEmpty()) return;
-        int nextIndex = (currentIndex + 1) % playlist.size();
-        showTrack(nextIndex);
-    }
-
-    private void previousTrack() {
-        if (playlist.isEmpty()) return;
-        int prevIndex = (currentIndex - 1 + playlist.size()) % playlist.size();
-        showTrack(prevIndex);
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }
+

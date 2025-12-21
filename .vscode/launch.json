@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "MetaTune GUI",
+      "request": "launch",
+      "mainClass": "scr.ApplicationGUI",
+      "vmArgs": "--enable-native-access=javafx.graphics --module-path \"${workspaceFolder}/lib/javafx\" --add-modules javafx.controls,javafx.fxml,javafx.media",
+      "classPaths": [
+        "${workspaceFolder}/bin",
+        "${workspaceFolder}/lib/jaudiotagger-2.2.6.jar"
+      ]
+    }
+  ]
+}

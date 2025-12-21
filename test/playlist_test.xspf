@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist version="1" xmlns="http://xspf.org/ns/0/">
+  <title>Playlist depuis répertoire</title>
+  <trackList>
+<track>
+  <location>C:/Users/HP/Documents/MetaTune/test/../ressources/Musique/AudioAmbi_-_Mindful_Weightless_Stillness.mp3</location>
+  <title>Mindful Weightless Stillness</title>
+  <creator>AudioAmbi</creator>
+  <album>Inconnu</album>
+</track>
+<track>
+  <location>C:/Users/HP/Documents/MetaTune/test/../ressources/Musique/Christmas_Moment__Holiday_Christmas_Background_Music_.mp3</location>
+  <title>Christmas Moment (Holiday Christmas Background Music)</title>
+  <creator>TolsetMusic</creator>
+  <album>Inconnu</album>
+</track>
+<track>
+  <location>C:/Users/HP/Documents/MetaTune/test/../ressources/Musique/Judas Priest - Firepower.mp3</location>
+  <title>Firepower</title>
+  <creator>Judas Priest</creator>
+  <album>Firepower</album>
+</track>
+<track>
+  <location>C:/Users/HP/Documents/MetaTune/test/../ressources/Musique/Sabrina Carpenter - Tears.mp3</location>
+  <title>Tears</title>
+  <creator>Sabrina Carpenter</creator>
+  <album>Tears Single</album>
+</track>
+<track>
+  <location>C:/Users/HP/Documents/MetaTune/test/../ressources/Musique/Slipknot - Eyeless.mp3</location>
+  <title>Eyeless</title>
+  <creator>Slipknot</creator>
+  <album>Slipknot</album>
+</track>
+<track>
+  <location>C:/Users/HP/Documents/MetaTune/test/../ressources/Musique/Stevesterry2_-_SELLING_OUT.mp3</location>
+  <title>SELLING OUT</title>
+  <creator>Stevesterry2</creator>
+  <album>Inconnu</album>
+</track>
+  </trackList>
+</playlist>

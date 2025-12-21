@@ -1,11 +1,14 @@
-package scr ; 
+package scr;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class ExporteurXspf implements ExporteurPlaylist {
+
     @Override
     public void exporter(Playlist playlist, String cheminSortie) {
-        //ecrire un textblock 
+        // Créer le XML avec un Text Block
         StringBuilder xml = new StringBuilder(
                 String.format("""
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -16,7 +19,7 @@ public class ExporteurXspf implements ExporteurPlaylist {
         );
 
         for (FichierMp3 mp3 : playlist.getPistes()) {
-            //recuperer les URL des fichiers MP3 
+            // Récupérer les URL des fichiers MP3 en format URI
             xml.append(String.format("""
                             <track>
                               <location>%s</location>
@@ -37,6 +40,7 @@ public class ExporteurXspf implements ExporteurPlaylist {
                 </playlist>
                 """);
 
+        // Écriture dans le fichier de sortie
         try (FileWriter w = new FileWriter(cheminSortie)) {
             w.write(xml.toString());
         } catch (IOException e) {
@@ -46,6 +50,16 @@ public class ExporteurXspf implements ExporteurPlaylist {
 
     @Override
     public String formaterChemin(FichierMp3 mp3) {
-        return mp3.getChemin().replace("\\", "/");
+        if (mp3.getFichier() == null) {
+            return mp3.getChemin(); // fallback
+        }
+        // Retourne le chemin absolu canonique pour résoudre ../ et .
+        try {
+            return mp3.getFichier().getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return mp3.getFichier().getAbsolutePath();
+        }
     }
 }
+

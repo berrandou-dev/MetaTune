@@ -1,0 +1,43 @@
+{
+  "playlist": {
+    "title": "Playlist depuis répertoire",
+    "track": [
+      {
+        "location": "/home/batssim/Bureau/MetaTune/ressources/Musique/Christmas_Moment__Holiday_Christmas_Background_Music_.mp3",
+        "title": "Christmas Moment (Holiday Christmas Background Music)",
+        "creator": "TolsetMusic",
+        "album": "Inconnu"
+      },
+      {
+        "location": "/home/batssim/Bureau/MetaTune/ressources/Musique/Tab_-_Sake_Bomb_(feat._Jade_Gritty_&amp;_Aurc).mp3",
+        "title": "Sake Bomb (feat. Jade Gritty &amp; Aurc)",
+        "creator": "Tab",
+        "album": "Inconnu"
+      },
+      {
+        "location": "/home/batssim/Bureau/MetaTune/ressources/Musique/Sabrina Carpenter - Tears.mp3",
+        "title": "Tears",
+        "creator": "Sabrina Carpenter",
+        "album": "Tears Single"
+      },
+      {
+        "location": "/home/batssim/Bureau/MetaTune/ressources/Musique/Stevesterry2_-_SELLING_OUT.mp3",
+        "title": "SELLING OUT",
+        "creator": "Stevesterry2",
+        "album": "Inconnu"
+      },
+      {
+        "location": "/home/batssim/Bureau/MetaTune/ressources/Musique/Judas Priest - Firepower.mp3",
+        "title": "Firepower",
+        "creator": "Judas Priest",
+        "album": "Firepower"
+      },
+      {
+        "location": "/home/batssim/Bureau/MetaTune/ressources/Musique/Slipknot - Eyeless.mp3",
+        "title": "Eyeless",
+        "creator": "Slipknot",
+        "album": "Slipknot"
+      }
+    ]
+  }
+}

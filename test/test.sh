@@ -48,8 +48,12 @@ if [ ! -f "$MP3_TEST" ]; then
     echo "   Veuillez placer un fichier MP3 de test."
 fi
 
+<<<<<<< HEAD
 # Classpath pour tests CLI (JavaFX non nécessaire)
 CLASSPATH="$BIN_DIR;$LIB_JAUDIO"
+=======
+CLASSPATH="$BIN_DIR:$LIB_EXT"
+>>>>>>> b4b330b17fc0e79b8bf422e9d51c511fa214f979
 
 # ==============================
 # Tests CLI

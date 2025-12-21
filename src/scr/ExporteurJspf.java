@@ -48,9 +48,19 @@ public class ExporteurJspf implements ExporteurPlaylist {
             e.printStackTrace();
         }
     }
-
+    
     @Override
     public String formaterChemin(FichierMp3 mp3) {
-        return ("file:///" + mp3.getChemin().replace("\\", "/"));
+        if (mp3.getFichier() == null) {
+            return mp3.getChemin(); // fallback
+        }
+        // Retourne le chemin absolu canonique pour résoudre ../ et .
+        try {
+            return mp3.getFichier().getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return mp3.getFichier().getAbsolutePath();
+        }
     }
+
 }

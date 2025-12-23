@@ -6,8 +6,10 @@
 SRC_DIR="../src"
 BIN_DIR="../bin"
 LIB_JAUDIO="../lib/jaudiotagger-2.2.6.jar"
-# Chemin JavaFX : Git Bash sous Windows / Linux/macOS
-JAVA_FX_PATH="../lib/javafx"
+
+# JavaFX (SDK Windows)
+JAVA_FX_LIB="../lib/javafx/lib"
+JAVA_FX_BIN="../lib/javafx/bin"
 
 MP3_TEST="test.mp3"
 REPERTOIRE="../ressources/Musique"
@@ -27,7 +29,7 @@ mkdir -p "$BIN_DIR"
 
 # Compilation avec JavaFX et Jaudiotagger
 javac -d "$BIN_DIR" \
-  --module-path "$JAVA_FX_PATH" \
+  --module-path "$JAVA_FX_LIB" \
   --add-modules javafx.controls,javafx.fxml \
   -cp "$LIB_JAUDIO" \
   $(find "$SRC_DIR" -name "*.java")
@@ -48,12 +50,8 @@ if [ ! -f "$MP3_TEST" ]; then
     echo "   Veuillez placer un fichier MP3 de test."
 fi
 
-<<<<<<< HEAD
-# Classpath pour tests CLI (JavaFX non nécessaire)
+# Classpath (Windows => ;)
 CLASSPATH="$BIN_DIR;$LIB_JAUDIO"
-=======
-CLASSPATH="$BIN_DIR:$LIB_EXT"
->>>>>>> b4b330b17fc0e79b8bf422e9d51c511fa214f979
 
 # ==============================
 # Tests CLI
@@ -95,7 +93,7 @@ java -cp "$CLASSPATH" scr.ApplicationCLITest -d "$REPERTOIRE" -o "$PLAYLIST_JSPF
 echo
 
 echo "=============================="
-echo " Test 8 : Mode répertoire + export (-o)"
+echo " Test 8 : Mode répertoire + export M3U"
 echo "=============================="
 java -cp "$CLASSPATH" scr.ApplicationCLITest -d "$REPERTOIRE" -o "$PLAYLIST_OUT"
 echo
@@ -107,7 +105,7 @@ java -cp "$CLASSPATH" scr.ApplicationCLITest -x
 echo
 
 # ==============================
-# Test Application GUI
+# Test Application GUI (JavaFX)
 # ==============================
 echo "=============================="
 echo " Test 10 : Application GUI"
@@ -115,10 +113,13 @@ echo "=============================="
 echo " (Test interactif : fermez la fenêtre pour continuer)"
 
 java --enable-native-access=javafx.graphics \
-     --module-path "$JAVA_FX_PATH" --add-modules javafx.controls,javafx.fxml \
-     -cp "$BIN_DIR;$LIB_JAUDIO" scr.ApplicationGUI
-echo
+     -Djava.library.path="$JAVA_FX_BIN" \
+     --module-path "$JAVA_FX_LIB" \
+     --add-modules javafx.controls,javafx.fxml \
+     -cp "$CLASSPATH" \
+     scr.Application
 
+echo
 echo "=============================="
 echo " Tests terminés"
 echo "=============================="

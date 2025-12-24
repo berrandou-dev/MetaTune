@@ -1,0 +1,16 @@
+# Fichiers compilés
+bin/
+*.class
+
+# Fichiers temporaires / IDE
+*.iml
+*.log
+.idea/
+.vscode/
+
+# Librairies lourdes
+lib/javafx/lib/*.dll
+lib/javafx/lib/*.so
+lib/javafx/lib/*.dylib
+lib/javafx/lib/*.jar
+

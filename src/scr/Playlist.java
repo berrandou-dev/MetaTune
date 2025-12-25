@@ -38,9 +38,8 @@ public class Playlist {
         pistes.addAll(mp3s);
     }
 
-    // Liste accessible en lecture seule
     public List<FichierMp3> getPistes() {
-        return new ArrayList<>(pistes);
+        return pistes;
     }
 
     public String getNom() {

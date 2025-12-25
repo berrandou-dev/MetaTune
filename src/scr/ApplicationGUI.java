@@ -129,49 +129,81 @@ public class ApplicationGUI extends Application {
         List<FichierMp3> mp3s = exp.analyser(dir.getAbsolutePath());
         listeMorceaux.getItems().setAll(mp3s);
     }
+    
+    private ExporteurPlaylist getExporteur(File f) {
+    String nom = f.getName().toLowerCase();
+
+    if (nom.endsWith(".m3u8"))
+        return new ExporteurM3u8();
+    if (nom.endsWith(".xspf"))
+        return new ExporteurXspf();
+    if (nom.endsWith(".jspf"))
+        return new ExporteurJspf();
+
+    return null;
+}
+
 
     private void sauvegarderPlaylist(Stage stage) {
-        FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Playlist MetaTune (*.playlist)", "*.playlist"),
-                new FileChooser.ExtensionFilter("Playlist texte (*.txt)", "*.txt")
-        );
-        File f = fc.showSaveDialog(stage);
-        if (f == null) return;
+    FileChooser fc = new FileChooser();
+    fc.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("M3U8 (*.m3u8)", "*.m3u8"),
+            new FileChooser.ExtensionFilter("XSPF (*.xspf)", "*.xspf"),
+            new FileChooser.ExtensionFilter("JSPF (*.jspf)", "*.jspf")
+    );
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-            for (FichierMp3 mp3 : listeMorceaux.getItems()) {
-                bw.write(mp3.getChemin());
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            afficherErreur("Erreur lors de la sauvegarde");
-        }
+    File f = fc.showSaveDialog(stage);
+    if (f == null) return;
+
+    ExporteurPlaylist exporteur = getExporteur(f);
+    if (exporteur == null) {
+        afficherErreur("Format non supporté");
+        return;
     }
+
+    // Conversion ListView -> Playlist
+    Playlist playlist = new Playlist("Ma playlist");
+    playlist.getPistes().addAll(listeMorceaux.getItems());
+
+    exporteur.exporter(playlist, f.getAbsolutePath());
+}
+
 
     private void chargerPlaylist(Stage stage) {
-        FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Playlist MetaTune (*.playlist)", "*.playlist"),
-                new FileChooser.ExtensionFilter("Playlist texte (*.txt)", "*.txt")
-        );
-        File f = fc.showOpenDialog(stage);
-        if (f == null) return;
+    FileChooser fc = new FileChooser();
+    fc.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Playlist M3U8 (*.m3u8)", "*.m3u8")
+    );
 
-        listeMorceaux.getItems().clear();
+    File f = fc.showOpenDialog(stage);
+    if (f == null) return;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String ligne;
-            while ((ligne = br.readLine()) != null) {
-                File mp3 = new File(ligne);
-                if (mp3.exists() && mp3.getName().toLowerCase().endsWith(".mp3")) {
-                    listeMorceaux.getItems().add(new FichierMp3(ligne));
-                }
+    listeMorceaux.getItems().clear();
+
+    try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+        String ligne;
+        while ((ligne = br.readLine()) != null) {
+
+            if (ligne.startsWith("#") || ligne.isBlank())
+                continue;
+
+            File mp3;
+            if (ligne.startsWith("file:/")) {
+                mp3 = new File(new java.net.URI(ligne));
+            } else {
+                mp3 = new File(ligne);
             }
-        } catch (IOException e) {
-            afficherErreur("Erreur lors du chargement");
+
+            if (mp3.exists() && mp3.getName().toLowerCase().endsWith(".mp3")) {
+                listeMorceaux.getItems().add(new FichierMp3(mp3.getAbsolutePath()));
+            }
         }
+    } catch (Exception e) {
+        afficherErreur("Erreur chargement playlist");
     }
+}
+
+
 
     private void afficherMetadonnees(FichierMp3 mp3) {
         if (mp3 == null) return;

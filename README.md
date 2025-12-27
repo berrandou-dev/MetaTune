@@ -101,6 +101,7 @@ java -jar cli.jar -d "chemin/vers/dossier/" -o "chemin/vers/playlist.(m3u8, xspf
 java --module-path ../lib/javafx/lib --add-modules javafx.controls,javafx.fxml -jar gui.jar
 ```
 Ctrl+clic: Selectionne une ou plusieurs musiques de manière non-contiguë.
+
 Shift+clic: Selectionne une ou plusieurs musiques de manière contiguë.
 
 ---

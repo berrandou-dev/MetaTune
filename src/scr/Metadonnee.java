@@ -61,7 +61,7 @@ public class Metadonnee {
                 genre = get(tag, FieldKey.GENRE, genre);
 
                 annee = parseYear(get(tag, FieldKey.YEAR, ""));
-                numeroPiste = parseInt(get(tag, FieldKey.TRACK, ""), -1);
+                numeroPiste = parseInt(get(tag, FieldKey.TRACK, ""), 0);
 
                 Artwork art = tag.getFirstArtwork();
                 if (art != null) {

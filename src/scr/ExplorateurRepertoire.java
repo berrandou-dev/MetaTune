@@ -4,8 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe permettant d'explorer un répertoire et d'analyser les fichiers MP3.
+ * <p>
+ * Fournit des méthodes pour lister tous les fichiers et filtrer les MP3.
+ * </p>
+ */
 public class ExplorateurRepertoire {
-    //Analyse un répertoire et retourne tous les fichiers MP3 valides
+
+    /**
+     * Analyse un répertoire donné et retourne la liste de tous les fichiers MP3 valides.
+     *
+     * @param cheminRepertoire Chemin du répertoire à analyser
+     * @return Liste des fichiers MP3 trouvés
+     */
     public List<FichierMp3> analyser(String cheminRepertoire) {
         File dossier = new File(cheminRepertoire);
 
@@ -26,7 +38,12 @@ public class ExplorateurRepertoire {
         return mp3List;
     }
 
-    //Liste récursivement tous les fichiers d’un dossier
+    /**
+     * Liste récursivement tous les fichiers présents dans un dossier.
+     *
+     * @param chemin Chemin du dossier à parcourir
+     * @return Liste de tous les fichiers (non filtrés par type)
+     */
     public List<File> listerTousLesFichiers(String chemin) {
         List<File> resultat = new ArrayList<>();
         File dossier = new File(chemin);
@@ -41,8 +58,7 @@ public class ExplorateurRepertoire {
         for (File f : fichiers) {
             if (f.isFile()) {
                 resultat.add(f);
-            } 
-            else if (f.isDirectory()) {
+            } else if (f.isDirectory()) {
                 resultat.addAll(listerTousLesFichiers(f.getAbsolutePath()));
             }
         }
@@ -50,7 +66,12 @@ public class ExplorateurRepertoire {
         return resultat;
     }
 
-    //Vérifie si un fichier est un MP3 en se basant sur son extension
+    /**
+     * Vérifie si un fichier est un MP3 en se basant sur son extension.
+     *
+     * @param fichier Fichier à vérifier
+     * @return true si le fichier est un MP3, false sinon
+     */
     public boolean estMp3(File fichier) {
         if (fichier == null || !fichier.isFile()) return false;
         String nomFichier = fichier.getName().toLowerCase();

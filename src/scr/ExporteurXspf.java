@@ -1,11 +1,19 @@
 package scr;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Classe permettant d'exporter une playlist au format XML XSPF.
+ */
 public class ExporteurXspf implements ExporteurPlaylist {
 
+    /**
+     * Exporte une playlist au format XSPF vers un fichier de sortie.
+     *
+     * @param playlist    La playlist à exporter
+     * @param cheminSortie Chemin complet du fichier de sortie
+     */
     @Override
     public void exporter(Playlist playlist, String cheminSortie) {
         // Créer le XML avec un Text Block
@@ -19,7 +27,7 @@ public class ExporteurXspf implements ExporteurPlaylist {
         );
 
         for (FichierMp3 mp3 : playlist.getPistes()) {
-            // Récupérer les URL des fichiers MP3 en format URI
+            // Ajouter chaque morceau dans la playlist
             xml.append(String.format("""
                             <track>
                               <location>%s</location>
@@ -48,12 +56,17 @@ public class ExporteurXspf implements ExporteurPlaylist {
         }
     }
 
+    /**
+     * Formate le chemin d'un fichier MP3 pour l'export XSPF.
+     *
+     * @param mp3 Fichier MP3 à formater
+     * @return Chemin absolu canonique du fichier si possible, sinon chemin absolu
+     */
     @Override
     public String formaterChemin(FichierMp3 mp3) {
         if (mp3.getFichier() == null) {
             return mp3.getChemin(); // fallback
         }
-        // Retourne le chemin absolu canonique pour résoudre ../ et .
         try {
             return mp3.getFichier().getCanonicalPath();
         } catch (IOException e) {

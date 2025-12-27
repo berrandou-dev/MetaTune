@@ -1,9 +1,19 @@
 package scr;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Classe permettant d'exporter une playlist au format JSON JSPF.
+ */
 public class ExporteurJspf implements ExporteurPlaylist {
 
+    /**
+     * Exporte une playlist au format JSPF vers un fichier de sortie.
+     *
+     * @param playlist    La playlist à exporter
+     * @param cheminSortie Chemin complet du fichier de sortie
+     */
     @Override
     public void exporter(Playlist playlist, String cheminSortie) {
 
@@ -48,7 +58,13 @@ public class ExporteurJspf implements ExporteurPlaylist {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Formate le chemin d'un fichier MP3 pour l'export JSPF.
+     *
+     * @param mp3 Fichier MP3 à formater
+     * @return Chemin absolu canonique du fichier si possible, sinon chemin absolu
+     */
     @Override
     public String formaterChemin(FichierMp3 mp3) {
         if (mp3.getFichier() == null) {
@@ -64,3 +80,4 @@ public class ExporteurJspf implements ExporteurPlaylist {
     }
 
 }
+

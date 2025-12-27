@@ -1,7 +1,9 @@
 # MetaTune – Gestion de playlists et métadonnées MP3
 
-**Projet POO & Java – L2-I 2025-2026** 
+**Projet POO & Java – L2-I 2025-2026**
+ 
 **Auteurs : BOUATMANE Nesrine & BERRANDOU Nassim**
+
 **Groupe TD : Groupe TD B-10**
 
 ---
